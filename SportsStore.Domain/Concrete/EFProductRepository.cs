@@ -27,6 +27,8 @@ namespace SportsStore.Domain.Concrete
                     dbentry.Description = product.Description;
                     dbentry.Price = product.Price;
                     dbentry.Category = product.Category;
+                    dbentry.ImageData = product.ImageData;
+                    dbentry.ImageMimeType = product.ImageMimeType;
                 }
             }
             context.SaveChanges();
@@ -42,5 +44,7 @@ namespace SportsStore.Domain.Concrete
             }
             return dbentry;
         }
+
+       
     }
 }
