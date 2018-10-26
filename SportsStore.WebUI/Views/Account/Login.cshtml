@@ -10,25 +10,66 @@
 <div class=" panel">
     <div class="panel panel-heading">
         <h3>Log in</h3>
-        <h2>@Html.ActionLink("Index","edit","Admin",new { productId = 2 },null)</h2>
+        <h2>@Html.ActionLink("Index", "edit", "Admin", new { productId = 2 }, null)</h2>
     </div>
 
     <div class=" panel-body">
         <p class="lead">
             Please log in to access the administration area;
         </p>
-        @using(Html.BeginForm()){ 
+        @using (Html.BeginForm())
+        {
             @Html.ValidationSummary()
             <div class="form-group">
                 <label>User Name:</label>
-                @Html.TextBoxFor(m => m.UserName, new { @class="form control"})
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form control" })
             </div>
             <div class="form-group">
                 <label>Password:</label>
-                @Html.PasswordFor(m=>m.Password,new {@class=" from control" })
+                @Html.PasswordFor(m => m.Password, new { @class = " from control" })
             </div>
             <input type="submit" value="Log in" class="btn btn-primary" />
         }
     </div>
 </div>
+
+
+<div style="text-align:center;">
+    <div>用户名：<input type="text" id="txt_username" /></div>
+    <div>密  码：<input type="password" id="txt_password" /></div>
+    <div><input type="button" value="登录" id="btn_login" class="btn-default" /></div>
+</div>
+<script>
+    $(function () {
+        $("#btn_login").click(function () {
+           
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:49207/api/User",
+                data: { strUser: $("#txt_username").val(), strPwd: $("#txt_password").val() },
+                crossDomain: true,
+                dataType: 'jsonp',
+                success: function (data, status) {
+                    if (status == "success") {
+                        if (!data.bRes) {
+                            alert("登录失败");
+                            return;
+                        }
+                        alert("登录成功");
+                        //登录成功之后将用户名和用户票据带到主界面
+                        window.location = "/Home/Index?UserName=" + data.UserName + "&Ticket=" + data.Ticket;
+                    }
+                },
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.statusText);
+                },
+                complete: function () {
+
+                }
+
+            });
+        });
+    });
+</script>
 
